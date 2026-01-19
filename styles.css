@@ -183,6 +183,11 @@ button:hover {
   margin-bottom: 16px;
 }
 
+.results__summary {
+  margin: 0 0 16px;
+  color: #c8d4ff;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));

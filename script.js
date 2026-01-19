@@ -48,19 +48,18 @@ const monsters = [
   { name: "龙蜥", file: "龙蜥.webp" },
 ];
 
-const cardsContainer = document.getElementById("cards");
-const overlay = document.getElementById("overlay");
-const stage = document.getElementById("stage");
-const buttons = document.querySelectorAll("button[data-draw]");
-
 const BLANK_RATE = 0.85;
-const buttons = document.querySelectorAll("button[data-draw]");
-
-const BLANK_RATE = 0.5;
 
 const pickMonster = () => {
   const index = Math.floor(Math.random() * monsters.length);
   return monsters[index];
+};
+
+const drawOnce = () => {
+  if (Math.random() < BLANK_RATE) {
+    return { type: "blank" };
+  }
+  return { type: "monster", monster: pickMonster() };
 };
 
 const buildCard = (result) => {
@@ -89,33 +88,50 @@ const buildCard = (result) => {
   return card;
 };
 
-const drawOnce = () => {
-  if (Math.random() < BLANK_RATE) {
-    return { type: "blank" };
-  }
-  return { type: "monster", monster: pickMonster() };
-};
+document.addEventListener("DOMContentLoaded", () => {
+  const cardsContainer = document.getElementById("cards");
+  const overlay = document.getElementById("overlay");
+  const stage = document.getElementById("stage");
+  const stageText = document.querySelector(".stage__text");
+  const summary = document.getElementById("summary");
+  const buttons = document.querySelectorAll("button[data-draw]");
 
-const drawCards = (count) => {
-  cardsContainer.innerHTML = "";
-  overlay.classList.add("show");
-  overlay.setAttribute("aria-hidden", "false");
-  stage.classList.add("is-drawing");
-
-  setTimeout(() => {
-    const results = Array.from({ length: count }, drawOnce);
-    results.forEach((result) => {
-      cardsContainer.appendChild(buildCard(result));
+  const setButtonsDisabled = (disabled) => {
+    buttons.forEach((button) => {
+      button.disabled = disabled;
     });
-    overlay.classList.remove("show");
-    overlay.setAttribute("aria-hidden", "true");
-    stage.classList.remove("is-drawing");
-  }, 900);
-};
+  };
 
-buttons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const count = Number(button.dataset.draw);
-    drawCards(count);
+  const drawCards = (count) => {
+    cardsContainer.innerHTML = "";
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden", "false");
+    stage.classList.add("is-drawing");
+    stageText.textContent = "抽卡中...";
+    setButtonsDisabled(true);
+
+    setTimeout(() => {
+      const results = Array.from({ length: count }, drawOnce);
+      results.forEach((result) => {
+        cardsContainer.appendChild(buildCard(result));
+      });
+
+      const monsterCount = results.filter((result) => result.type === "monster").length;
+      const blankCount = results.length - monsterCount;
+      summary.textContent = `本次抽卡：${count} 抽，怪物 ${monsterCount}，空白 ${blankCount}`;
+
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+      stage.classList.remove("is-drawing");
+      stageText.textContent = "点击按钮开始抽卡";
+      setButtonsDisabled(false);
+    }, 900);
+  };
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const count = Number(button.dataset.draw);
+      drawCards(count);
+    });
   });
 });
