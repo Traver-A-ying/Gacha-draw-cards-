@@ -54,6 +54,9 @@ const stage = document.getElementById("stage");
 const buttons = document.querySelectorAll("button[data-draw]");
 
 const BLANK_RATE = 0.85;
+const buttons = document.querySelectorAll("button[data-draw]");
+
+const BLANK_RATE = 0.5;
 
 const pickMonster = () => {
   const index = Math.floor(Math.random() * monsters.length);
