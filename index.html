@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>原神怪物小抽卡</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div>
+        <p class="subtitle">Genshin Monster Gacha</p>
+        <h1>原神怪物小抽卡</h1>
+      </div>
+      <div class="actions">
+        <button data-draw="1">单抽</button>
+        <button data-draw="5">5连抽</button>
+        <button data-draw="10">10连抽</button>
+        <button data-draw="20">20连抽</button>
+      </div>
+    </header>
+
+    <section class="stage" id="stage">
+      <div class="stage__glow"></div>
+      <div class="stage__portal">
+        <div class="stage__circle"></div>
+        <div class="stage__sparkles"></div>
+        <div class="stage__shooting-star"></div>
+        <p class="stage__text">点击按钮开始抽卡</p>
+      </div>
+    </section>
+
+    <section class="results" aria-live="polite">
+      <h2>抽卡结果</h2>
+      <div class="cards" id="cards"></div>
+    </section>
+  </div>
+
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="overlay__content">
+      <div class="overlay__ring"></div>
+      <p>抽卡中...</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
