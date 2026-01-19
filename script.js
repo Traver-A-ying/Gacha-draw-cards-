@@ -50,6 +50,10 @@ const monsters = [
 
 const cardsContainer = document.getElementById("cards");
 const overlay = document.getElementById("overlay");
+const stage = document.getElementById("stage");
+const buttons = document.querySelectorAll("button[data-draw]");
+
+const BLANK_RATE = 0.85;
 const buttons = document.querySelectorAll("button[data-draw]");
 
 const BLANK_RATE = 0.5;
@@ -96,6 +100,7 @@ const drawCards = (count) => {
   cardsContainer.innerHTML = "";
   overlay.classList.add("show");
   overlay.setAttribute("aria-hidden", "false");
+  stage.classList.add("is-drawing");
 
   setTimeout(() => {
     const results = Array.from({ length: count }, drawOnce);
@@ -104,6 +109,7 @@ const drawCards = (count) => {
     });
     overlay.classList.remove("show");
     overlay.setAttribute("aria-hidden", "true");
+    stage.classList.remove("is-drawing");
   }, 900);
 };
 
